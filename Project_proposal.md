@@ -32,7 +32,8 @@ on disparities and supporting healthier, more equitable communities.
     area (with polygons showing the zip codes). Concentration is shown
     by color schemes.
 
-2.  Graphs showing association of housing price and food quality.
+2.  Graphs showing association of housing price and healthy store
+    concentration
 
 3.  Interactive bar chart with comparison of health conditions with
     store concentration in each borough of NYC
@@ -47,7 +48,33 @@ Additional Datasets:
 
 2.  NYC Health Data: Borough-level data on obesity and diabetes rates
 
+3.  NYC Housing data (based on zip code)
+
+4.  NYC Farmer’s market dataset
+
+5.  Food price data in 2019
+
 ## The planned analyses / visualizations / coding challenges
+
+##### Analyses:
+
+Assess accessibility of stores by proximity to subway stations and
+walkability
+
+Measure neighborhood concentration of healthy stores and its correlation
+with obesity and diabetes rates
+
+Compare median household income and housing prices with accessibility
+and concentration of healthy food options
+
+##### Visualizations:
+
+charts for grocery prices across boroughs Graphs showing association of
+housing price and concentration of healthy stores  
+Interactive bar chart with comparison of health conditions with store
+concentration in each borough of NYC
+
+##### Coding challenges:
 
 Some datasets might have many missing data
 
