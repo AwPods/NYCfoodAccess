@@ -11,11 +11,19 @@ Wang (fw2394) Sonum Siddalingaiah (scs2267)
 Your Ultimate Guide to Healthy Food Shopping in NYC: Eat Well, Live
 Better!
 
-## The motivation for this project、
+## The motivation for this project
 
 To understand and improve access to healthy food options in NYC,
 addressing public health challenges related to food accessibility and
 quality
+
+Access to healthy food is essential for public health, yet many NYC
+neighborhoods lack nutritious options, particularly in low-income areas.
+Our project maps health food accessibility across NYC, examining factors
+like proximity to subway stations, neighborhood income, and housing
+prices. By exploring the relationship between food access and health
+outcome, we aim to inform residents and urban planners, shedding light
+on disparities and supporting healthier, more equitable communities.
 
 ## The intended final products
 
