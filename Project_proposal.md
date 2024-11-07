@@ -27,15 +27,10 @@ on disparities and supporting healthier, more equitable communities.
 
 ## The intended final products
 
-1.  Interactive maps
-
-<!-- -->
-
-1.  accessibility of healthy stores and distance from subway stations.
-2.  Concentration of healthy stores in each zip code area (with polygons
-    showing the zip codes). Concentration is shown by color schemes.
-
-<!-- -->
+1.  Interactive maps a.accessibility of healthy stores and distance from
+    subway stations. b. Concentration of healthy stores in each zip code
+    area (with polygons showing the zip codes). Concentration is shown
+    by color schemes.
 
 2.  Graphs showing association of housing price and food quality.
 
