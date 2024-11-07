@@ -45,11 +45,11 @@ Joining process between datasets could cause missing data.
 
 ## The planned timeline 
 
-Weekly Team Meetings: Mondays, 6-7 pm 
+##### Weekly Team Meetings: Mondays, 6-7 pm 
 
 Ongoing from November 11 through December 7 
 
-Project Phases: 
+##### Project Phases: 
 
 1. Data Collection & Cleaning: Week of Nov 11 
 
@@ -63,6 +63,6 @@ Project Phases:
 
 6. Complete final analyses and create visual assets. 
 
-December 7, 2024: Final Deliverable Due by 11:59 pm 
+##### December 7, 2024: Final Deliverable Due by 11:59 pm 
 
 Submit final report, project webpage with screencast, and peer assessments. 
