@@ -1,17 +1,17 @@
 Final Project Proposal (zw2975, cm3341, tc3326, fw2394, scs2267)
 ================
 
-\#The group members (names and UNIs)
+# The group members (names and UNIs)
 
 Zhiyu Wei (zw2975) Carolina Montes Garcia (cm3341) KK Chen (tc3326) Fang
 Wang (fw2394) Sonum Siddalingaiah (scs2267)
 
-\#The tentative project title
+# The tentative project title
 
 Your Ultimate Guide to Healthy Food Shopping in NYC: Eat Well, Live
 Better!
 
-\#The motivation for this project、
+# The motivation for this project、
 
 To understand and improve access to healthy food options in NYC,
 addressing public health challenges related to food accessibility and
