@@ -3,7 +3,7 @@ title: "Final Project Proposal (zw2975, cm3341, tc3326, fw2394, scs2267)"
 output: github_document
 ---
 
-# The group members (names and UNIs) 
+## The group members (names and UNIs) 
 
 Zhiyu Wei (zw2975) 
 Carolina Montes Garcia (cm3341) 
@@ -11,15 +11,15 @@ KK Chen (tc3326)
 Fang Wang (fw2394) 
 Sonum Siddalingaiah (scs2267) 
 
-# The tentative project title 
+## The tentative project title 
 
 Your Ultimate Guide to Healthy Food Shopping in NYC: Eat Well, Live Better! 
 
-# The motivation for this project、
+## The motivation for this project、
 
 To understand and improve access to healthy food options in NYC, addressing public health challenges related to food accessibility and quality 
 
-#The intended final products 
+## The intended final products 
 
 1. Interactive maps 
   a. accessibility of healthy stores and distance from subway stations. 
@@ -29,7 +29,7 @@ To understand and improve access to healthy food options in NYC, addressing publ
 
 3. Interactive bar chart with comparison of health conditions with store concentration in each borough of NYC 
 
-#The anticipated data sources 
+## The anticipated data sources 
 Primary Dataset: Recognized_Shop_Healthy_Stores_20241105 
 
 Additional Datasets: 
@@ -38,12 +38,12 @@ Additional Datasets:
 
 2. NYC Health Data: Borough-level data on obesity and diabetes rates 
 
-#The planned analyses / visualizations / coding challenges 
+## The planned analyses / visualizations / coding challenges 
 Some datasets might have many missing data 
 
 Joining process between datasets could cause missing data.  
 
-#The planned timeline 
+## The planned timeline 
 
 Weekly Team Meetings: Mondays, 6-7 pm 
 
