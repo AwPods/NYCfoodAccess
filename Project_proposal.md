@@ -14,8 +14,7 @@ Better!
 ## The motivation for this project
 
 To understand and improve access to healthy food options in NYC,
-addressing public health challenges related to food accessibility and
-quality
+addressing public health challenges related to food accessibility.
 
 Access to healthy food is essential for public health, yet many NYC
 neighborhoods lack nutritious options, particularly in low-income areas.
