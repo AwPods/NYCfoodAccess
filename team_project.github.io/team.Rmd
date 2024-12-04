@@ -1,0 +1,13 @@
+---
+title: "Team"
+output:
+  html_document:
+    toc: false
+    toc_float: false # change toc: false and toc_float: false, so I remove the menu bar on the left since I don't need it.
+---
+
+Welcome to our site—so glad you’re here! We’re a lively bunch of students from Columbia University’s Mailman School of Public Health, each bringing our unique flair from different backgrounds and programs. What unites us? A shared mission to dive deep into applied biostatistics, master the art of data science, and champion food access and justice in NYC. Think of us as your friendly neighborhood data explorers, blending science with curiosity to uncover the secrets of Healthy Stores and make healthy, affordable food accessible for everyone in the Big Apple. Let’s make a healthier, fairer NYC together! 🍎🗽
+
+
+
+
