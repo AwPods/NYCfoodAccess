@@ -20,14 +20,14 @@ library(tidyverse)
 ```
 
 ```{r}
-squirrel_census = 
-  read_csv("data/clean_squirrel_2018.csv")
+#squirrel_census = 
+  #read_csv("dataset")
 ```
 
 
 ### Data Dictionary
 
-The raw dataset we utilized can be found  [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-29). Our cleaned squirrel census dataset, available on our project [github](https://github.com/fish-carolyn/p8105_squirrel_final.git), has `r nrow(squirrel_census)` observations and includes the following variables:
+The raw dataset we utilized can be found  [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-29). Our cleaned squirrel census dataset, available on our project [github](https://github.com/AwPods/NYCfoodAccess.git), has `r nrow(squirrel_census)` observations and includes the following variables:
 
 * `x`: Longitude.
 * `y`: Latitude.
