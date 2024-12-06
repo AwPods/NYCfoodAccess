@@ -1,6 +1,7 @@
 ---
-title: "Pandemic Impact On Stores"
+title: "Project Report"
 author: "Fang Wang"
 date: "2024-11-28"
 output: html_document
 ---
+
