@@ -1,1 +1,201 @@
+---
+title: "NYC Food Access: Relationship betweeen number of food stores and peprcentage of overweight"
+output: 
+  html_document:
+    code_folding: hide
+    always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(modelr)
+library(labelled)
+library(lmtest)
+library(cluster)
+library(factoextra)
+```
+
+```{r import data}
+# Import 2 datasets for regression analysis
+retail_food_stores = read.csv("./team_project.github.io/data/Retail_Food_Stores_clean.csv")
+
+overwt = read.csv("./team_project.github.io/data/Overweight by boroughs.csv")
+```
+
+<br>
+
+### Data cleaning
+
+```{r data cleaning}
+# average the percentage for each year for each borough
+overwt_mean = overwt |>
+  mutate(perc_overwt = word(Percent, 1)) |>
+  mutate(perc_overwt = as.numeric(perc_overwt)) |>
+  group_by(Geography) |>
+  summarize(perc = mean(perc_overwt, na.rm =TRUE))|>
+  rename(county = Geography) 
+
+
+# group numbers of stores by counties
+num_stores = retail_food_stores |>
+  group_by(borough, zip_code)|>
+  count() |>
+  rename (store_num = n,
+          county = borough)
+
+# join datasets
+regression_data = left_join(overwt_mean, num_stores, by="county")
+
+
+# Pearson's Linear Regression
+m1 = lm(perc ~ store_num, data = regression_data)
+
+summary(m1)
+
+# scatter plot for regression
+ggplot(data = regression_data, aes(x = store_num, y = perc)) +
+  geom_point() +  # Scatter points
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +  # Add a linear trend line
+  labs(
+    title = "Overweight Percentage vs.Number of Stores by Zip Codes",
+    x = "Number of Stores (by zipc codes)",
+    y = "Percentage Overweight")
+```
+
+<br> <br>
+
+### Assumptions
+
+#### Normality
+
+```{r normality}
+# Extract residuals
+residuals = resid(m1)
+
+# base R qqplot
+qqnorm(residuals, main = "QQ Plot of Residuals")
+qqline(residuals, col = "red", lwd = 2)
+
+# histogram
+# Base R histogram
+hist(residuals, 
+     main = "Histogram of Residuals", 
+     xlab = "Residuals", 
+     col = "lightblue", 
+     border = "black", 
+     breaks = 20)  # Adjust 'breaks' for bin width
+
+
+# Create a data frame for plotting
+residual_data = data.frame(residuals = residuals)
+
+# Checking using histogram
+ggplot(residual_data, aes(x = residuals)) +
+  geom_histogram(binwidth = 1, fill = "lightblue", color = "black", alpha = 0.7) +  # Adjust binwidth as needed
+  labs(
+    title = "Histogram of Residuals",
+    x = "Residuals",
+    y = "Frequency" ) 
+
+
+```
+
+Overall, the residuals do not appear to follow a normal distribution, as the points consistently deviate from the red line. There seems to be many extreme values around the 2 ends of the distribution.
+
+<br>
+
+#### Homoscedasticity (equal variance)
+
+```{r Homoscedasticity (equal variance)}
+# residual vs. fitted value
+plot(fitted(m1), resid(m1),
+     main = "Residuals vs Fitted Values",
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     pch = 20)  # Add points
+abline(h = 0, col = "red", lwd = 2)  # Add a reference line at zero
+
+# test for homoscedasticity
+bptest(m1)
+```
+
+The test shows assumption is met since p-value < 0.05.
+
+<br>
+
+#### Linearity
+
+```{r linearity, warning = FALSE}
+# residual plot
+# Scatterplot of number of stores and percentage of overweight
+ggplot(data = regression_data, aes(x = store_num, y = perc)) +
+  geom_point() +  # Scatter points
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +  # Add a linear trend line
+  labs(
+    title = "Overweight Percentage vs.Number of Stores by Zip Codes",
+    x = "Number of Stores (by zipc codes)",
+    y = "Percentage Overweight")
+
+resettest(m1)
+# p-value > 0.05, linearity assumption is not met
+
+```
+
+P-value > 0.05, linearity assumption is not met.
+
+Since 2 of the 3 assumptions are not met, we should change our analysis type from parametric to non-parametric. We can no longer use linear regression with the datasets we have.
+
+<br> <br>
+
+### Non-parametric test methods
+
+##### Spearman's Rank Correlation
+
+Since the assumptions for Pearson's correlation cannot be all met, we can switch to Spearman's
+
+```{r Spearman Rank, warning = FALSE}
+cor.test(regression_data$store_num, regression_data$perc, method = "spearman")
+
+```
+
+<br>
+
+##### Kendall's Tau
+
+```{r Kendalls Tau}
+cor.test(regression_data$store_num, regression_data$perc, method = "kendall")
+
+```
+
+Both Kendall's Tau and Spearman's Rank tests gave p-values \< 0.05, indicating that there is a significant correlation between the numbers of food store within each zip code and the percentage of overweight individuals in each borough.
+
+<br> <br>
+
+### Clustering analysis (In case Spearman's Rank test is not approved)
+
+```{r coordinates}
+# exctract coordinates from retail food store dataset
+coords = retail_food_stores |>
+  select(latitude, longitude)
+
+```
+
+```{r perform k clustering}
+# Determine optimal number of clusters
+fviz_nbclust(coords, kmeans, method = "wss")  # Within Sum of Squares (elbow method)
+
+```
+
+```{r run k means}
+set.seed(8105)  # For reproducibility
+k <- 4  # Replace with the number of clusters from the elbow method
+kmeans_result <- kmeans(coords, centers = k, nstart = 25)
+```
+
+```{r visualize clusters}
+fviz_cluster(kmeans_result, data = coords, geom = "point", stand = FALSE)
+
+```
 
