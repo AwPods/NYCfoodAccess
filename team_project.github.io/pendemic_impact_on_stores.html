@@ -32,6 +32,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -220,6 +221,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -321,6 +325,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Pandemic Impact On Stores</h1>
@@ -330,7 +342,106 @@ $(document).ready(function () {
 </div>
 
 
+<div
+id="question-is-there-a-significant-difference-in-the-average-number-of-healthy-food-stores-before-and-after-pandemic-compare-2019-and-2023"
+class="section level2">
+<h2>Question: Is there a significant difference in the average number of
+healthy food stores before and after pandemic (compare 2019 and
+2023)?</h2>
+<p>Import healthy stores dataset <code>stores_farmer_market</code> for
+the years 2019 and 2023 that are relevant for this question.</p>
+<pre class="r"><code>stores_farmers_market_years = read.csv(&quot;./data/stores_farmer_market.csv&quot;,  
+  na = c(&quot;NA&quot;, &quot;.&quot;)) %&gt;% 
+  filter(year %in% c(2019,2023))</code></pre>
+<p>Count of the number of healthy stores per borough per year.</p>
+<pre class="r"><code>stores_by_year_borough = 
+  stores_farmers_market_years %&gt;%
+  group_by(year, borough) %&gt;%
+  summarise(num_stores = n(), .groups = &quot;drop&quot;)</code></pre>
+<p>Pivot wider for t-test prep and so we can see a nice table with
+changes from 2019 to 2023.</p>
+<pre class="r"><code>stores_ttest_data = 
+  stores_by_year_borough %&gt;%
+  pivot_wider(names_from = year, values_from = num_stores, names_prefix = &quot;year_&quot;) %&gt;%
+  drop_na()
 
+stores_ttest_data %&gt;%
+  knitr::kable(
+    col.names = c(&quot;Borough&quot;, &quot;2019&quot;, &quot;2023&quot;),
+    caption = &quot;Number of Healthy Food Stores by Borough in 2019 and 2023&quot;
+  )</code></pre>
+<table>
+<caption>Number of Healthy Food Stores by Borough in 2019 and
+2023</caption>
+<thead>
+<tr class="header">
+<th align="left">Borough</th>
+<th align="right">2019</th>
+<th align="right">2023</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Bronx</td>
+<td align="right">46</td>
+<td align="right">66</td>
+</tr>
+<tr class="even">
+<td align="left">Brooklyn</td>
+<td align="right">81</td>
+<td align="right">117</td>
+</tr>
+<tr class="odd">
+<td align="left">Manhattan</td>
+<td align="right">57</td>
+<td align="right">42</td>
+</tr>
+<tr class="even">
+<td align="left">Queens</td>
+<td align="right">23</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="left">Staten Island</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<p>t-test</p>
+<pre class="r"><code>t_test_result = 
+  t.test(stores_ttest_data$year_2019, stores_ttest_data$year_2023, paired = TRUE)
+
+t_test_summary = broom::tidy(t_test_result)
+
+t_test_summary %&gt;%
+  mutate(
+    statistic = round(statistic, 3),
+    estimate = round(estimate, 3),
+    conf.low = round(conf.low, 3),
+    conf.high = round(conf.high, 3),
+    p.value = format.pval(p.value, digits = 3)
+  ) %&gt;%
+  knitr::kable(
+    caption = &quot;Paired T-Test Results: Number of Healthy Food Stores (2019 vs 2023)&quot;
+  )</code></pre>
+<p>There is not a significant different between the number of healthy
+stores pre-pandemic in 2019 and the number of stores in 2023. p-value =
+0.3844.</p>
+<pre class="r"><code>ggplot(stores_by_year_borough, aes(x = borough, y = num_stores, fill = as.factor(year))) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+  labs(
+    title = &quot;Number of Healthy Food Stores by Borough (2019 vs 2023)&quot;,
+    x = &quot;Borough&quot;,
+    y = &quot;Number of Stores&quot;,
+    fill = &quot;Year&quot;
+  ) +
+  theme_minimal()</code></pre>
+<p><img src="pendemic_impact_on_stores_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Though the overall change in number of stores by borough was not
+significant, we note that there was some increase in the number of
+stores in most boroughs (except Manhattan)</p>
+</div>
 
 
 
@@ -365,6 +476,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
