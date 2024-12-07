@@ -19,9 +19,9 @@ library(factoextra)
 
 ```{r import data}
 # Import 2 datasets for regression analysis
-retail_food_stores = read.csv("./team_project.github.io/data/Retail_Food_Stores_clean.csv")
+retail_food_stores = read.csv("./data/Retail_Food_Stores_clean.csv")
 
-overwt = read.csv("./team_project.github.io/data/Overweight by boroughs.csv")
+overwt = read.csv("./data/Overweight by boroughs.csv")
 ```
 
 <br>
