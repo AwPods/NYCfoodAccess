@@ -2,6 +2,7 @@
 title: "Food Access & Food Justice in NYC"
 output: 
   html_document:
+    code_folding: hide
     toc: true
     toc_float: true
 editor_options: 
@@ -14,9 +15,15 @@ editor_options:
 library(flexdashboard)
 library(tidyverse)
 library(leaflet)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=10, fig.height=8}
+```{r, echo=TRUE, warning=FALSE, message=FALSE,fig.width=10, fig.height=8}
 # load and clean stores dataset:
 stores = read.csv("./data/Recognized_Shop_Healthy_Stores_20241116.csv") |> 
   janitor::clean_names() |> 
@@ -46,38 +53,18 @@ retail_stores = read.csv("./data/Retail_Food_Stores_clean.csv") |>
   select(store_name, borough, year, store_address, latitude, longitude, type) |> 
   distinct(latitude, longitude, .keep_all = TRUE)
 
-# this is the code to convert zip codes to latitudes and longitudes, I will save the csv locally since running the code chunk takes long time.
- # pantries = read.csv("./data/food_pantry_clean.csv") |> 
- # filter(!is.na(zipcode)) |>
- # rename(store_address = address, store_name = pantry_name) |> 
- # mutate(address = paste(zipcode, "United States")) |>  # Add country to the address
- # geocode(address = address, method = "osm", lat = latitude, long = longitude) 
-
-# write.csv(pantries, "pantries.csv")
-
-pantries = read.csv("./data/pantries.csv") |> 
-  mutate (year = 2014) |> 
-  select (store_name, borough, year, store_address, latitude, longitude) |> 
-  mutate (type = "food pantry") |> 
-  distinct(latitude, longitude, .keep_all = TRUE)
-
-# fix one zip code which is "MUNA SOCIAL SERVICE SOUTH JAMAICA", zip code should be 11433 not 11453.
 
 ## bind the store and farmer_market together
-stores_markets_retails_pantries = rbind(stores, farmer_market, retail_stores, pantries) |> 
+stores_markets_retails = rbind(stores, farmer_market, retail_stores) |> 
   mutate(borough = case_when(
     borough == "Queen" ~ "Queens",
     TRUE ~ borough
   ))
 
-write.csv(stores_markets_retails_pantries, "./data/stores_markets_retails_pantries.csv")
+write.csv(stores_markets_retails, "./data/stores_markets_retails.csv")
 
 
-stores_markets_retails_pantries = read.csv("./data/stores_markets_retails_pantries.csv") 
-
-stores_markets_retails_pantries|> 
-  # Reorder the 'type' variable
-  mutate(type = factor(type, levels = c("healthy store", "retail store", "food pantry", "farmer market"))) |> 
+stores_markets_retails|> 
   filter(!is.na(latitude) & !is.na(longitude)) |>  # Remove rows where latitude or longitude is NA
   leaflet() |> 
   addTiles() |>  # Adjust the transparency of the map tiles (0 = fully transparent, 1 = fully opaque)
@@ -87,7 +74,7 @@ stores_markets_retails_pantries|>
   addCircleMarkers(
     lng = ~longitude,
     lat = ~latitude,
-    data = stores_markets_retails_pantries|> filter(type == "retail store"),
+    data = stores_markets_retails|> filter(type == "retail store"),
     popup = ~paste("<strong>Store Name:</strong>", store_name, "<br>",
                    "<strong>Borough:</strong>", borough, "<br>",
                    "<strong>Address:</strong>", store_address, "<br>",
@@ -96,26 +83,13 @@ stores_markets_retails_pantries|>
     fillOpacity = 0.3,
     radius = 1
   ) |> 
-  
-  # Add Food Pantries
-  addCircleMarkers(
-    lng = ~longitude,
-    lat = ~latitude,
-    data = stores_markets_retails_pantries|> filter(type == "food pantry"),
-    popup = ~paste("<strong>Store Name:</strong>", store_name, "<br>",
-                   "<strong>Borough:</strong>", borough, "<br>",
-                   "<strong>Address:</strong>", store_address, "<br>",
-                   "<strong>Type:</strong>", type),
-    color = "orange",
-    fillOpacity = 0.3,
-    radius = 1
-  ) |> 
+
   
   # Add Farmer Markets Last (Red)
   addCircleMarkers(
     lng = ~longitude,
     lat = ~latitude,
-    data = stores_markets_retails_pantries|> filter(type == "farmer market"),
+    data = stores_markets_retails|> filter(type == "farmer market"),
     popup = ~paste("<strong>Store Name:</strong>", store_name, "<br>",
                    "<strong>Borough:</strong>", borough, "<br>",
                    "<strong>Address:</strong>", store_address, "<br>",
@@ -129,7 +103,7 @@ stores_markets_retails_pantries|>
  addCircleMarkers(
   lng = ~longitude,
   lat = ~latitude,
-  data = stores_markets_retails_pantries %>% 
+  data = stores_markets_retails |> 
     filter(type == "healthy store", !is.na(longitude), !is.na(latitude)),
   popup = ~paste(
     "<strong>Store Name:</strong>", store_name, "<br>",
@@ -142,8 +116,8 @@ stores_markets_retails_pantries|>
 ) |> 
   addLegend(
     position = "bottomright",
-    colors = c("blue", "green", "orange", "red"),
-    labels = c("Healthy Stores", "Retail Stores", "Food Pantries", "Farmer Markets"),
+    colors = c("blue", "green", "red"),
+    labels = c("Healthy Stores", "Retail Stores", "Farmer Markets"),
     title = "Store Types"
   )
 ```
