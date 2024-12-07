@@ -1,8 +1,0 @@
----
-title: "Limitations"
-output: 
-  html_document:
-    toc: false
-    toc_float: false
----
-This section provides information about the project's limitations and the team behind it.
