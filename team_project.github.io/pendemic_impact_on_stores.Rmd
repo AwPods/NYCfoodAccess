@@ -1,7 +1,6 @@
 ---
 title: "Pandemic Impact On Stores"
-author: "Fang Wang"
-date: "2024-11-28"
+
 output: 
   html_document:
     code_folding: hide
@@ -14,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 
 ```
+
+Since we had the data available, we were curious to analyze whether the pandemic had any impact on the number of healthy stores available to residents of each NYC Borough of interest. We selected 2019 as a pre-pandemic time point and 2023 as a "post-pandemic" time point.
 
 
 ## Question: Is there a significant difference in the average number of healthy food stores before and after pandemic (compare 2019 and 2023)?
